@@ -7,6 +7,7 @@ init_board = [[0, 0, 0],
 class ChessBoard:
     def __init__(self):
         self.board = init_board
+        self.draw_flag = 0
         self.player1_flag = 1
         self.player2_flag = 2
         self.row = 3
@@ -51,6 +52,7 @@ class ChessBoard:
                     break
             if count >= self.win_num:
                 return player
+
         return
 
     def print_board(self):

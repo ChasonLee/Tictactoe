@@ -50,16 +50,23 @@ class StatisticAgent:
 
     def simulation(self, r, c):
         sim_board = copy.deepcopy(self.chess_board.board)
-        self.make_a_move(sim_board, r, c, self.my_flag)
+        winner = self.make_a_move(sim_board, r, c, self.my_flag)
+        if winner == self.chess_board.draw_flag:
+            return 0.0
+        elif winner == self.my_flag:
+            return 1.0
+        win_times = 0
         for i in range(self.sim_times):
             sim_board2 = copy.deepcopy(sim_board)
             while True:
                 winner = self.make_rnd_move(sim_board2, self.enemy_flag)
                 if winner != None:
-                    if winner == self.my_flag:
-                        break
+                    break
                 winner = self.make_rnd_move(sim_board2, self.my_flag)
-                if winner != None:
+                if winner == self.my_flag:
+                    win_times += 1
+                    break
+                elif winner == self.chess_board.draw_flag:
                     break
 
 
