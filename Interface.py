@@ -4,25 +4,52 @@ __author__ = 'Chason'
 from ChessBoard import ChessBoard
 from StatisticAgent import StatisticAgent
 
-cb = ChessBoard()
-sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag)
+def main():
+    cb = ChessBoard()
+    sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag)
 
-cb.print_board()
-for i in range(9):
-    winner = sa.make_rnd_move(sa.chess_board.board, sa.my_flag)
     cb.print_board()
-    if winner != None and winner != -1:
-        print winner, "wins!"
-        break
-    elif winner == -1:
-        print "The game is already over."
-        break
+    for i in range(9):
+        winner = sa.make_rnd_move(sa.chess_board.board, sa.my_flag)
+        cb.print_board()
+        if winner != None and winner != -1:
+            print winner, "wins!"
+            break
+        elif winner == -1:
+            print "The game is already over."
+            break
 
-    move = [int(i) for i in raw_input("your move:").split()]
-    r, c = move[0], move[1]
-    sa.chess_board.board[r][c] = sa.enemy_flag
-    winner = cb.judge(r, c)
+        move = [int(i) for i in raw_input("your move:").split()]
+        r, c = move[0], move[1]
+        sa.chess_board.board[r][c] = sa.enemy_flag
+        winner = cb.judge(r, c)
+        cb.print_board()
+        if winner != None:
+            print winner, "wins!"
+            break
+
+def test():
+    cb = ChessBoard()
+    sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag)
     cb.print_board()
-    if winner != None:
-        print winner, "wins!"
-        break
+
+    for i in range(9):
+        winner = sa.make_statistic_move(sa.chess_board.board, sa.my_flag)
+        cb.print_board()
+        if winner != None and winner != -1:
+            print winner, "wins!"
+            break
+        elif winner == -1:
+            print "The game is already over."
+            break
+
+        move = [int(i) for i in raw_input("your move:").split()]
+        r, c = move[0], move[1]
+        sa.chess_board.board[r][c] = sa.enemy_flag
+        winner = cb.judge(r, c)
+        cb.print_board()
+        if winner != None:
+            print winner, "wins!"
+            break
+# main()
+test()
