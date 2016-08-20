@@ -15,18 +15,9 @@ class StatisticAgent:
         c = num % self.chess_board.col
         return r, c
 
-    def search_empty_spaces(self, board):
-        inx = 0
-        empty = []
-        for r in board:
-            for c in r:
-                if c == 0:
-                    empty.append(inx)
-                inx += 1
-        return empty
 
     def rnd_move(self, board):
-        empty = self.search_empty_spaces(board)
+        empty = self.chess_board.search_empty_spaces(board)
         empty_count = len(empty)
         if empty_count > 0:
             rnd = (int)(random()*empty_count)
@@ -71,7 +62,7 @@ class StatisticAgent:
 
 
     def statistic_move(self):
-        empty = self.search_empty_spaces(self.chess_board.board)
+        empty = self.chess_board.search_empty_spaces(self.chess_board.board)
         scores = []
         for e in empty:
             r, c = self.line2matrix(e)

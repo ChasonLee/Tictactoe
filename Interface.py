@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Chason'
-import pygame
+# import pygame
 from ChessBoard import ChessBoard
 from StatisticAgent import StatisticAgent
 

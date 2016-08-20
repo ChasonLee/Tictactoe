@@ -14,6 +14,16 @@ class ChessBoard:
         self.col = 3
         self.win_num = 3
 
+    def search_empty_spaces(self, board):
+        inx = 0
+        empty = []
+        for r in board:
+            for c in r:
+                if c == 0:
+                    empty.append(inx)
+                inx += 1
+        return empty
+
     def judge(self, r, c):
         player = self.board[r][c]
         for i in range(4):
@@ -52,8 +62,11 @@ class ChessBoard:
                     break
             if count >= self.win_num:
                 return player
-
-        return
+        empty = self.search_empty_spaces(self.board)
+        if empty == []:
+            return self.draw_flag
+        else:
+            return None
 
     def print_board(self):
         for r in self.board:
