@@ -26,24 +26,27 @@ class StatisticAgent:
         else:
             return -1, -1
 
-    def make_rnd_move(self, board, flag):
-        r, c = self.rnd_move(board)
+    def make_rnd_move(self, chess_board, flag):
+        r, c = self.rnd_move(chess_board.board)
         if r != -1 and c != -1:
-            board[r][c] = flag
-            winner = self.chess_board.judge(r, c)
+            chess_board.board[r][c] = flag
+            winner = chess_board.judge(r, c)
             return winner
         else:
             return -1
 
-
+    def make_a_move(self, chess_board, r, c, flag):
+        chess_board.board[r][c] = flag
+        winner = chess_board.judge(r, c)
+        return winner
 
     def simulation(self, r, c):
         sim_board = copy.deepcopy(self.chess_board.board)
         sim_chess_board = ChessBoard()
         sim_chess_board.reset_board(sim_board)
-        winner = sim_chess_board.make_a_move(r, c, self.my_flag)
-        # sim_chess_board.print_board()
+        winner = self.make_a_move(sim_chess_board, r, c, self.my_flag)
 
+        # sim_chess_board.print_board()
         if winner == self.chess_board.draw_flag:
             return 0.0
         elif winner == self.my_flag:
@@ -54,10 +57,10 @@ class StatisticAgent:
             sim_chess_board2 = ChessBoard()
             sim_chess_board2.reset_board(sim_board2)
             while True:
-                winner = sim_chess_board2.make_rnd_move(self.enemy_flag)
+                winner = self.make_rnd_move(sim_chess_board2, self.enemy_flag)
                 if winner != None:
                     break
-                winner = sim_chess_board2.make_rnd_move(self.my_flag)
+                winner = self.make_rnd_move(sim_chess_board2, self.my_flag)
                 if winner == self.my_flag:
                     win_times += 1
                     break

@@ -48,8 +48,11 @@ def test():
         sa.chess_board.board[r][c] = sa.enemy_flag
         winner = cb.judge(r, c)
         cb.print_board()
-        if winner != None:
+        if winner == cb.player1_flag or winner == cb.player2_flag:
             print winner, "wins!"
+            break
+        elif winner == cb.draw_flag:
+            print "There is a draw."
             break
 # main()
 test()
