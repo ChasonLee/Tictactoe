@@ -1,16 +1,15 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Chason'
-
 from random import random
 
-init_board = [[0, 0, 0],
-              [0, 0, 0],
-              [0, 0, 0]]
-
-
 class ChessBoard:
-    def __init__(self):
-        self.board = init_board
+    def __init__(self, board = None):
+        if board == None:
+            self.board = [[0, 0, 0],
+                          [0, 0, 0],
+                          [0, 0, 0]]
+        else:
+            self.board = board
         self.draw_flag = 0
         self.player1_flag = 1
         self.player2_flag = 2
@@ -88,3 +87,32 @@ class ChessBoard:
             print
         print
 
+    def make_a_move(self, r, c, flag, print_log = False):
+        self.board[r][c] = flag
+        winner = self.judge(r, c)
+        if print_log:
+            print "%d moved [%d, %d]"%(flag, r, c)
+        return winner
+
+    def line2matrix(self, num):
+        r = num / self.col
+        c = num % self.col
+        return r, c
+
+    def rnd_move(self):
+        empty = self.search_empty_spaces()
+        empty_count = len(empty)
+        if empty_count > 0:
+            rnd = (int)(random()*empty_count)
+            return self.line2matrix(empty[rnd])
+        else:
+            return -1, -1
+
+    def make_rnd_move(self, flag):
+        r, c = self.rnd_move()
+        if r != -1 and c != -1:
+            self.board[r][c] = flag
+            winner = self.judge(r, c)
+            return winner
+        else:
+            return -1
