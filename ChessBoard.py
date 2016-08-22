@@ -21,10 +21,16 @@ class ChessBoard:
     def reset_board(self, board):
         self.board = board
 
-    def search_empty_spaces(self, board):
+    def is_empty(self, r, c):
+        if self.board[r][c] == 0:
+            return True
+        else:
+            return False
+
+    def search_empty_spaces(self):
         inx = 0
         empty = []
-        for r in board:
+        for r in self.board:
             for c in r:
                 if c == 0:
                     empty.append(inx)
@@ -69,7 +75,7 @@ class ChessBoard:
                     break
             if count >= self.win_num:
                 return player
-        empty = self.search_empty_spaces(self.board)
+        empty = self.search_empty_spaces()
         if empty == []:
             return self.draw_flag
         else:

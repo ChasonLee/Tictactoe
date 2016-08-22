@@ -17,8 +17,8 @@ class StatisticAgent:
         return r, c
 
 
-    def rnd_move(self, board):
-        empty = self.chess_board.search_empty_spaces(board)
+    def rnd_move(self, chess_board):
+        empty = chess_board.search_empty_spaces()
         empty_count = len(empty)
         if empty_count > 0:
             rnd = (int)(random()*empty_count)
@@ -27,7 +27,7 @@ class StatisticAgent:
             return -1, -1
 
     def make_rnd_move(self, chess_board, flag):
-        r, c = self.rnd_move(chess_board.board)
+        r, c = self.rnd_move(chess_board)
         if r != -1 and c != -1:
             chess_board.board[r][c] = flag
             winner = chess_board.judge(r, c)
@@ -69,7 +69,7 @@ class StatisticAgent:
         return 1.0 * win_times / self.sim_times
 
     def statistic_move(self):
-        empty = self.chess_board.search_empty_spaces(self.chess_board.board)
+        empty = self.chess_board.search_empty_spaces()
         scores = []
         for e in empty:
             print 'e =', e
