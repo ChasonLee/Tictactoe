@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Chason'
-# import pygame
+
+import pygame
+from pygame.locals import *
+from sys import exit
+
 from ChessBoard import ChessBoard
 from StatisticAgent import StatisticAgent
 
@@ -63,5 +67,25 @@ def statistic_test():
             print "There is a draw."
             break
 
+def pygame_test():
+    SCREEN_SIZE = (600, 600)
+    pygame.init()
+    screen = pygame.display.set_mode(SCREEN_SIZE, RESIZABLE, 32)
+    while True:
+        event = pygame.event.wait()
+        if event.type == QUIT:
+            exit()
+        screen_width, screen_height = SCREEN_SIZE
+
+        line_color = (100,200,100)
+        pygame.draw.line(screen, line_color, (0,200), (screen_width,200), 5)
+        pygame.draw.line(screen, line_color, (0,400), (screen_width,400), 5)
+        pygame.draw.line(screen, line_color, (200,0), (200,screen_height), 5)
+        pygame.draw.line(screen, line_color, (400,0), (400,screen_height), 5)
+
+        pygame.display.update()
+
+
 # rnd_test()
-statistic_test()
+# statistic_test()
+pygame_test()

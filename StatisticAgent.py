@@ -5,11 +5,11 @@ import copy
 from ChessBoard import ChessBoard
 
 class StatisticAgent:
-    def __init__(self, chess_board, my_flag, enemy_flag):
+    def __init__(self, chess_board, my_flag, enemy_flag, sim_times = 1000):
         self.chess_board = chess_board
         self.my_flag = my_flag
         self.enemy_flag = enemy_flag
-        self.sim_times = 1000
+        self.sim_times = sim_times
 
     def simulation(self, r, c):
         sim_board = copy.deepcopy(self.chess_board.board)
