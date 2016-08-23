@@ -4,9 +4,11 @@ __author__ = 'Chason'
 import pygame
 from pygame.locals import *
 from sys import exit
-
+from math import *
 from ChessBoard import ChessBoard
 from StatisticAgent import StatisticAgent
+
+base_size = 200
 
 def rnd_test():
     cb = ChessBoard()
@@ -67,22 +69,41 @@ def statistic_test():
             print "There is a draw."
             break
 
+def draw_flag(screen, x, y, flag):
+    if flag == 0:
+        pygame.draw.arc(screen, (200,0,0), (x / base_size * base_size + 20, y / base_size * base_size + 20, base_size - 40, base_size - 40), 0, 180, 5)
+    else:
+        pygame.draw.line(screen, (0,100,200), (x / base_size * base_size + 40, y / base_size * base_size + 40),
+                                            (x / base_size * base_size + base_size - 40 , y / base_size * base_size + base_size - 40), 10)
+        pygame.draw.line(screen, (0,100,255), (x / base_size * base_size + base_size - 40 , y / base_size * base_size + 40),
+                                            (x / base_size * base_size + 40, y / base_size * base_size + base_size - 40), 10)
+
 def pygame_test():
-    SCREEN_SIZE = (600, 600)
+    SCREEN_SIZE = (base_size * 3, base_size * 3)
     pygame.init()
     screen = pygame.display.set_mode(SCREEN_SIZE, RESIZABLE, 32)
     while True:
         event = pygame.event.wait()
+        screen.fill((0,0,0))
         if event.type == QUIT:
             exit()
         screen_width, screen_height = SCREEN_SIZE
 
         line_color = (100,200,100)
-        pygame.draw.line(screen, line_color, (0,200), (screen_width,200), 5)
-        pygame.draw.line(screen, line_color, (0,400), (screen_width,400), 5)
-        pygame.draw.line(screen, line_color, (200,0), (200,screen_height), 5)
-        pygame.draw.line(screen, line_color, (400,0), (400,screen_height), 5)
+        pygame.draw.line(screen, line_color, (0, base_size), (screen_width, base_size), 5)
+        pygame.draw.line(screen, line_color, (0, base_size * 2), (screen_width, base_size * 2), 5)
+        pygame.draw.line(screen, line_color, (base_size, 0), (base_size, screen_height), 5)
+        pygame.draw.line(screen, line_color, (base_size * 2, 0), (base_size * 2, screen_height), 5)
 
+        pressed_mouse = pygame.mouse.get_pressed()
+        if pressed_mouse[0]:
+            x, y =  pygame.mouse.get_pos()
+            print x,y
+            draw_flag(screen, x, y, 0)
+        elif pressed_mouse[2]:
+            x, y =  pygame.mouse.get_pos()
+            print x,y
+            draw_flag(screen, x, y, 1)
         pygame.display.update()
 
 
