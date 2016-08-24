@@ -36,7 +36,7 @@ class ChessBoard:
                 inx += 1
         return empty
 
-    def judge(self, r, c):
+    def judge(self, r, c, print_judge = False):
         player = self.board[r][c]
         for i in range(4):
             if i == 0:
@@ -73,9 +73,13 @@ class ChessBoard:
                 else:
                     break
             if count >= self.win_num:
+                if print_judge:
+                    print "player %d wins!"%player
                 return player
         empty = self.search_empty_spaces()
         if empty == []:
+            if print_judge:
+                print "There is a draw."
             return self.draw_flag
         else:
             return None
@@ -87,9 +91,9 @@ class ChessBoard:
             print
         print
 
-    def make_a_move(self, r, c, flag, print_log = False):
+    def make_a_move(self, r, c, flag, print_log = False, print_judge = False):
         self.board[r][c] = flag
-        winner = self.judge(r, c)
+        winner = self.judge(r, c, print_judge)
         if print_log:
             print "%d moved [%d, %d]"%(flag, r, c)
         return winner

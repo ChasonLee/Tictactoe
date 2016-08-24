@@ -5,7 +5,7 @@ import copy
 from ChessBoard import ChessBoard
 
 class StatisticAgent:
-    def __init__(self, chess_board, my_flag, enemy_flag, sim_times = 1000):
+    def __init__(self, chess_board, my_flag, enemy_flag, sim_times = 200):
         self.chess_board = chess_board
         self.my_flag = my_flag
         self.enemy_flag = enemy_flag
@@ -39,10 +39,10 @@ class StatisticAgent:
         empty = self.chess_board.search_empty_spaces()
         scores = []
         for e in empty:
-            print 'e =', e
+            # print 'e =', e
             r, c = self.chess_board.line2matrix(e)
             scores.append(self.simulation(r, c))
-        print scores
+        # print scores
         max_score = 0
         max_score_inx = 0
         for i,s in enumerate(scores):
@@ -54,7 +54,7 @@ class StatisticAgent:
     def make_statistic_move(self, chess_board, flag):
         r, c = self.statistic_calculating()
         if r != -1 and c != -1:
-            winner = chess_board.make_a_move(r, c, flag, True)
+            winner = chess_board.make_a_move(r, c, flag, False, True)
             return winner
         else:
             return -1
