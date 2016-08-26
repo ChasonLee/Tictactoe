@@ -170,7 +170,7 @@ def statistic_game():
     screen = pygame.display.set_mode(SCREEN_SIZE, RESIZABLE, 32)
 
     cb = ChessBoard()
-    sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag)
+    sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag, 100)
 
     draw_background(screen, (100,200,100), SCREEN_SIZE[0], SCREEN_SIZE[1])
 
