@@ -186,7 +186,7 @@ def statistic_game():
             x, y =  pygame.mouse.get_pos()
             r, c = xy2rc(x, y)
             if cb.is_empty(r, c):
-                winner = cb.make_a_move(r, c, sa.enemy_flag)
+                winner = cb.make_a_move(r, c, sa.enemy_flag, False, True)
                 game_step += 1
                 draw_chessboard(screen, cb)
                 if winner != None:
