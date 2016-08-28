@@ -7,7 +7,7 @@ from sys import exit
 from math import *
 from ChessBoard import ChessBoard
 from StatisticAgent import StatisticAgent
-
+import time
 base_size = 200
 
 def rnd_test():
@@ -82,11 +82,11 @@ def draw_flag_mouse(screen, x, y, flag):
 
 def draw_flag_board(screen, r, c, flag):
     if flag == 1:
-        pygame.draw.arc(screen, (200,0,0), (c * base_size + 20, r * base_size + 20, base_size - 40, base_size - 40), 0, 180, 5)
+        pygame.draw.arc(screen, (200,200,0), (c * base_size + 20, r * base_size + 20, base_size - 40, base_size - 40), 0, 180, 5)
     elif flag == 2:
-        pygame.draw.line(screen, (0,100,200), (c * base_size + 40, r * base_size + 40),
+        pygame.draw.line(screen, (0,150,250), (c * base_size + 40, r * base_size + 40),
                                             (c * base_size + base_size - 40 , r * base_size + base_size - 40), 10)
-        pygame.draw.line(screen, (0,100,255), (c * base_size + base_size - 40 , r * base_size + 40),
+        pygame.draw.line(screen, (0,150,250), (c * base_size + base_size - 40 , r * base_size + 40),
                                             (c * base_size + 40, r * base_size + base_size - 40), 10)
 
 def draw_chessboard(screen, chess_board):
@@ -164,16 +164,60 @@ def rnd_game():
 
         pygame.display.update()
 
+def game_setup():
+    pass
+
 def statistic_game():
     SCREEN_SIZE = (base_size * 3, base_size * 3)
     pygame.init()
     screen = pygame.display.set_mode(SCREEN_SIZE, RESIZABLE, 32)
+    background_color = (50,100,20)
+    screen.fill(background_color)
 
     cb = ChessBoard()
-    sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag, 100)
+    # pygame.draw.rect(screen, (50, 150, 100), Rect((100, 100), (400, 200)))
+    button_color = (100, 250, 150)
+    button1_rect = (100, 100, 400, 150)
+    button2_rect = (100, 350, 400, 150)
+    pygame.draw.ellipse(screen, button_color, button1_rect)
+    pygame.draw.ellipse(screen, button_color, button2_rect)
+
+    button1_text = "Player plays first"
+    button1_font = pygame.font.SysFont("arial", 30)
+    name_surface = button1_font.render(button1_text, True, (200, 100, 222), button_color)
+    screen.blit(name_surface, (190, 150))
+
+    button2_text = "AI plays first"
+    button2_font = pygame.font.SysFont("arial", 30)
+    name_surface = button2_font.render(button2_text, True, (200, 100, 222), button_color)
+    screen.blit(name_surface, (220, 400))
+
+    AI_plays_first = True
+    while True:
+        event = pygame.event.wait()
+        if event.type == QUIT:
+            exit()
+        pressed_mouse = pygame.mouse.get_pressed()
+        if pressed_mouse[0]:
+            x, y =  pygame.mouse.get_pos()
+            if button1_rect[0] < x < button1_rect[0] + button1_rect[2] and button1_rect[1] < y < button1_rect[1] + button1_rect[3]:
+                AI_plays_first = False
+                time.sleep(0.5)
+                break
+            elif button2_rect[0] < x < button2_rect[0] + button2_rect[2] and button2_rect[1] < y < button2_rect[1] + button2_rect[3]:
+                AI_plays_first = True
+                time.sleep(0.5)
+                break
+        pygame.display.update()
+    if AI_plays_first:
+        sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag, 1000)
+    else:
+        sa = StatisticAgent(cb, cb.player2_flag, cb.player1_flag, 1000)
+
+    screen.fill(background_color)
 
     draw_background(screen, (100,200,100), SCREEN_SIZE[0], SCREEN_SIZE[1])
-
+    pygame.display.update()
     finished = False
     game_step = 0
 
@@ -199,8 +243,19 @@ def statistic_game():
             if winner != None:
                 finished = True
             pygame.display.update()
-
-
+        if finished == True:
+            time.sleep(1)
+            if pressed_mouse[0]:
+                cb = ChessBoard()
+                screen.fill(background_color)
+                draw_background(screen, (100,200,100), SCREEN_SIZE[0], SCREEN_SIZE[1])
+                pygame.display.update()
+                finished = False
+                game_step = 0
+                if AI_plays_first:
+                    sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag, 1000)
+                else:
+                    sa = StatisticAgent(cb, cb.player2_flag, cb.player1_flag, 1000)
 # rnd_test()
 # statistic_test()
 # pygame_test()
