@@ -210,9 +210,9 @@ def statistic_game():
                 break
         pygame.display.update()
     if AI_plays_first:
-        sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag, 1000)
+        sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag, 100)
     else:
-        sa = StatisticAgent(cb, cb.player2_flag, cb.player1_flag, 1000)
+        sa = StatisticAgent(cb, cb.player2_flag, cb.player1_flag, 100)
 
     screen.fill(background_color)
 
@@ -253,9 +253,9 @@ def statistic_game():
                 finished = False
                 game_step = 0
                 if AI_plays_first:
-                    sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag, 1000)
+                    sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag, 100)
                 else:
-                    sa = StatisticAgent(cb, cb.player2_flag, cb.player1_flag, 1000)
+                    sa = StatisticAgent(cb, cb.player2_flag, cb.player1_flag, 100)
 # rnd_test()
 # statistic_test()
 # pygame_test()
