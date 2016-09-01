@@ -18,7 +18,7 @@ class StatisticAgent:
         if winner == self.chess_board.draw_flag:
             return 0.0
         elif winner == self.my_flag:
-            return 1.0
+            return 1.1
         win_times = 0
         lost_times = 0
         for i in range(self.sim_times):
@@ -37,7 +37,6 @@ class StatisticAgent:
                     break
                 elif winner == self.chess_board.draw_flag:
                     break
-        # return 1.0 * win_times / self.sim_times
         return 1.0 * (self.sim_times - lost_times) / self.sim_times
 
     def statistic_calculating(self):
