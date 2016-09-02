@@ -9,6 +9,7 @@ from ChessBoard import ChessBoard
 from StatisticAgent import StatisticAgent
 import time
 base_size = 200
+simulate_times = 1000
 
 def rnd_test():
     cb = ChessBoard()
@@ -209,10 +210,11 @@ def statistic_game():
                 time.sleep(0.5)
                 break
         pygame.display.update()
+
     if AI_plays_first:
-        sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag, 100)
+        sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag, simulate_times)
     else:
-        sa = StatisticAgent(cb, cb.player2_flag, cb.player1_flag, 100)
+        sa = StatisticAgent(cb, cb.player2_flag, cb.player1_flag, simulate_times)
 
     screen.fill(background_color)
 
@@ -253,9 +255,9 @@ def statistic_game():
                 finished = False
                 game_step = 0
                 if AI_plays_first:
-                    sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag, 100)
+                    sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag, simulate_times)
                 else:
-                    sa = StatisticAgent(cb, cb.player2_flag, cb.player1_flag, 100)
+                    sa = StatisticAgent(cb, cb.player2_flag, cb.player1_flag, simulate_times)
 # rnd_test()
 # statistic_test()
 # pygame_test()

@@ -120,3 +120,15 @@ class ChessBoard:
             return winner
         else:
             return -1
+
+    def get_win_style(self, win_flag):
+        for i in range(3):
+            if self.board[i][0] == win_flag and self.board[i][1] == win_flag and self.board[i][2] == win_flag:
+                return [(i, 0), (i, 1), (i, 2)]
+        for j in range(3):
+            if self.board[0][j] == win_flag and self.board[1][j] == win_flag and self.board[2][j] == win_flag:
+                return [(0, j), (1, j), (2, j)]
+        if self.board[0][0] == win_flag and self.board[1][1] == win_flag and self.board[2][2] == win_flag:
+            return [(0, 0), (1, 1), (2, 2)]
+        if self.board[0][2] == win_flag and self.board[1][1] == win_flag and self.board[2][0] == win_flag:
+            return [(0, 2), (1, 1), (2, 0)]
