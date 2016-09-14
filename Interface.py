@@ -9,7 +9,7 @@ from ChessBoard import ChessBoard
 from StatisticAgent import StatisticAgent
 import time
 base_size = 200
-simulate_times = 1000
+simulate_times = 200
 
 def rnd_test():
     cb = ChessBoard()
@@ -172,92 +172,85 @@ def statistic_game():
     SCREEN_SIZE = (base_size * 3, base_size * 3)
     pygame.init()
     screen = pygame.display.set_mode(SCREEN_SIZE, RESIZABLE, 32)
-    background_color = (50,100,20)
-    screen.fill(background_color)
 
-    cb = ChessBoard()
-    # pygame.draw.rect(screen, (50, 150, 100), Rect((100, 100), (400, 200)))
-    button_color = (100, 250, 150)
-    button1_rect = (100, 100, 400, 150)
-    button2_rect = (100, 350, 400, 150)
-    pygame.draw.ellipse(screen, button_color, button1_rect)
-    pygame.draw.ellipse(screen, button_color, button2_rect)
-
-    button1_text = "Player plays first"
-    button1_font = pygame.font.SysFont("arial", 30)
-    name_surface = button1_font.render(button1_text, True, (200, 100, 222), button_color)
-    screen.blit(name_surface, (190, 150))
-
-    button2_text = "AI plays first"
-    button2_font = pygame.font.SysFont("arial", 30)
-    name_surface = button2_font.render(button2_text, True, (200, 100, 222), button_color)
-    screen.blit(name_surface, (220, 400))
-
-    AI_plays_first = True
     while True:
-        event = pygame.event.wait()
-        if event.type == QUIT:
-            exit()
-        pressed_mouse = pygame.mouse.get_pressed()
-        if pressed_mouse[0]:
-            x, y =  pygame.mouse.get_pos()
-            if button1_rect[0] < x < button1_rect[0] + button1_rect[2] and button1_rect[1] < y < button1_rect[1] + button1_rect[3]:
-                AI_plays_first = False
-                time.sleep(0.5)
-                break
-            elif button2_rect[0] < x < button2_rect[0] + button2_rect[2] and button2_rect[1] < y < button2_rect[1] + button2_rect[3]:
-                AI_plays_first = True
-                time.sleep(0.5)
-                break
+        background_color = (50,100,20)
+        screen.fill(background_color)
+        cb = ChessBoard()
+        button_color = (100, 250, 150)
+        button1_rect = (100, 100, 400, 150)
+        button2_rect = (100, 350, 400, 150)
+        pygame.draw.ellipse(screen, button_color, button1_rect)
+        pygame.draw.ellipse(screen, button_color, button2_rect)
+
+        button1_text = "Player plays first"
+        button1_font = pygame.font.SysFont("arial", 30)
+        name_surface = button1_font.render(button1_text, True, (200, 100, 222), button_color)
+        screen.blit(name_surface, (190, 150))
+
+        button2_text = "AI plays first"
+        button2_font = pygame.font.SysFont("arial", 30)
+        name_surface = button2_font.render(button2_text, True, (200, 100, 222), button_color)
+        screen.blit(name_surface, (220, 400))
+
+        AI_plays_first = True
+
+        # wait for player to click
+        while True:
+            event = pygame.event.wait()
+            if event.type == QUIT:
+                exit()
+            pressed_mouse = pygame.mouse.get_pressed()
+            if pressed_mouse[0]:
+                x, y =  pygame.mouse.get_pos()
+                if button1_rect[0] < x < button1_rect[0] + button1_rect[2] and button1_rect[1] < y < button1_rect[1] + button1_rect[3]:
+                    AI_plays_first = False
+                    time.sleep(0.5)
+                    break
+                elif button2_rect[0] < x < button2_rect[0] + button2_rect[2] and button2_rect[1] < y < button2_rect[1] + button2_rect[3]:
+                    AI_plays_first = True
+                    time.sleep(0.5)
+                    break
+            pygame.display.update()
+
+        if AI_plays_first:
+            sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag, simulate_times)
+        else:
+            sa = StatisticAgent(cb, cb.player2_flag, cb.player1_flag, simulate_times)
+
+        screen.fill(background_color)
+
+        draw_background(screen, (100,200,100), SCREEN_SIZE[0], SCREEN_SIZE[1])
         pygame.display.update()
+        finished = False
+        game_step = 0
 
-    if AI_plays_first:
-        sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag, simulate_times)
-    else:
-        sa = StatisticAgent(cb, cb.player2_flag, cb.player1_flag, simulate_times)
-
-    screen.fill(background_color)
-
-    draw_background(screen, (100,200,100), SCREEN_SIZE[0], SCREEN_SIZE[1])
-    pygame.display.update()
-    finished = False
-    game_step = 0
-
-    while True:
-        event = pygame.event.wait()
-        if event.type == QUIT:
-            exit()
-        pressed_mouse = pygame.mouse.get_pressed()
-        if pressed_mouse[0] and game_step % 2 + 1 == sa.enemy_flag and finished == False:
-            x, y =  pygame.mouse.get_pos()
-            r, c = xy2rc(x, y)
-            if cb.is_empty(r, c):
-                winner = cb.make_a_move(r, c, sa.enemy_flag, False, True)
+        # playing game
+        while True:
+            event = pygame.event.wait()
+            if event.type == QUIT:
+                exit()
+            pressed_mouse = pygame.mouse.get_pressed()
+            if pressed_mouse[0] and game_step % 2 + 1 == sa.enemy_flag and finished == False:
+                x, y =  pygame.mouse.get_pos()
+                r, c = xy2rc(x, y)
+                if cb.is_empty(r, c):
+                    winner = cb.make_a_move(r, c, sa.enemy_flag, False, True)
+                    game_step += 1
+                    draw_chessboard(screen, cb)
+                    if winner != None:
+                        finished = True
+                    pygame.display.update()
+            if (game_step % 2) + 1 == sa.my_flag and finished == False:
+                winner = sa.make_statistic_move(cb, sa.my_flag)
                 game_step += 1
                 draw_chessboard(screen, cb)
                 if winner != None:
                     finished = True
                 pygame.display.update()
-        if (game_step % 2) + 1 == sa.my_flag and finished == False:
-            winner = sa.make_statistic_move(cb, sa.my_flag)
-            game_step += 1
-            draw_chessboard(screen, cb)
-            if winner != None:
-                finished = True
-            pygame.display.update()
-        if finished == True:
-            time.sleep(1)
-            if pressed_mouse[0]:
-                cb = ChessBoard()
-                screen.fill(background_color)
-                draw_background(screen, (100,200,100), SCREEN_SIZE[0], SCREEN_SIZE[1])
-                pygame.display.update()
-                finished = False
-                game_step = 0
-                if AI_plays_first:
-                    sa = StatisticAgent(cb, cb.player1_flag, cb.player2_flag, simulate_times)
-                else:
-                    sa = StatisticAgent(cb, cb.player2_flag, cb.player1_flag, simulate_times)
+            if finished == True:
+                time.sleep(1)
+                break
 # rnd_test()
 # statistic_test()
 # pygame_test()
